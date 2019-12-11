@@ -7,7 +7,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"go/build"
 	"html/template"
 	"io"
 	"log"
@@ -57,7 +56,7 @@ func isRoot(path string) bool {
 }
 
 func findRoot() (string, error) {
-	ctx := build.Default
+	/*ctx := build.Default
 	p, err := ctx.Import(basePkg, "", build.FindOnly)
 	if err == nil && isRoot(p.Dir) {
 		return p.Dir, nil
@@ -65,7 +64,7 @@ func findRoot() (string, error) {
 	tourRoot := filepath.Join(runtime.GOROOT(), "misc", "tour")
 	fmt.Println(tourRoot)
 	ctx.GOPATH = tourRoot
-	/*p, err = ctx.Import(basePkg, "", build.FindOnly)
+	p, err = ctx.Import(basePkg, "", build.FindOnly)
 	if err == nil && isRoot(tourRoot) {
 		gopath = tourRoot
 		return tourRoot, nil
