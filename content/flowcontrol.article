@@ -1,141 +1,132 @@
-Flow control statements: for, if, else, switch and defer
-Learn how to control the flow of your code with conditionals, loops, switches and defers.
+Các câu lệnh quản lý luồng: for, if, else, switch và defer
+Học cách quản lý luồng trong code của bạn với các điều kiện, vòng lặp, switch và defer.
 
-The Go Authors
+Tác giả của Go
 https://golang.org
 
 * For
 
-Go has only one looping construct, the `for` loop.
+Go chỉ có 1 loại vòng lặp mà thôi, đó là `for`.
 
-The basic `for` loop has three components separated by semicolons:
+Vòng lặp `for` cơ bản có 3 phần được tách biệt bằng dấu phẩy:
 
-- the init statement: executed before the first iteration
-- the condition expression: evaluated before every iteration
-- the post statement: executed at the end of every iteration
+- phần mở đầu - init statement: được thi hành trước khi việc lặp diễn ra
+- phần biểu thức điều kiện - condition expression: được thực thi sau khi việc lặp diễn ra
+- phần tuyên bố cập nhật - post statement: thực thi tại cuối của mỗi lần lặp
 
-The init statement will often be a short variable declaration, and the
-variables declared there are visible only in the scope of the `for`
-statement.
+Phần mở đầu thường dùng để khai báo một biến ngắn, và các biến được khai báo ở đây sẽ chỉ có hiệu lực trong nội bộ
+vòng lặp `for` mà thôi.
 
-The loop will stop iterating once the boolean condition evaluates to `false`.
+Vòng lặp sẽ dừng một khi biểu thức điều kiện trả về một kết quả boolean bằng `false`.
 
-*Note:* Unlike other languages like C, Java, or JavaScript there are no parentheses
-surrounding the three components of the `for` statement and the braces `{`}` are
-always required.
+*Chú*ý:* Không giống như C, Java, hay là Javascript Go không sử dụng dấu ngoặc đơn bao quanh 3 phần của câu lệnh `for`
+cho nên dấu ngoặc kếp `{`}` là bắt buộc.
 
 .play flowcontrol/for.go
 
-* For continued
+* Tiếp tục về For
 
-The init and post statements are optional.
+Phần mở đầu và phần tuyên bố cập nhật là tùy chọn - có thể bỏ trống.
 
 .play flowcontrol/for-continued.go
 
-* For is Go's "while"
+* For là "while" của Go
 
-At that point you can drop the semicolons: C's `while` is spelled `for` in Go.
+Tại điểm này bạn có thể bỏ đi các dấu phảy: `while` trong C giờ là `for` trong Go.
 
 .play flowcontrol/for-is-gos-while.go
 
 * Forever
 
-If you omit the loop condition it loops forever, so an infinite loop is compactly expressed.
+Nếu như bạn bỏ nốt phần điều kiện đi thì for sẽ lặp mãi mãi và trở thành vòng lặp vô cực =))
 
 .play flowcontrol/forever.go
 
 * If
 
-Go's `if` statements are like its `for` loops; the expression need not be
-surrounded by parentheses `(`)` but the braces `{`}` are required.
+Câu lệnh `if` trong Go cũng giống như vòng lặp `for`; bạn không cần
+dấu ngoặc đơn `(`)` nhưng `{`}` là bắt buộc.
 
 .play flowcontrol/if.go
 
-* If with a short statement
+* If với khai báo ngắn
 
-Like `for`, the `if` statement can start with a short statement to execute before the condition.
+Giống như `for`, câu lện `if` có thể bắt đầu với một khai báo ngắn để thi hành trước phần điều kiện.
 
-Variables declared by the statement are only in scope until the end of the `if`.
+Các biến được khai báo trong phần này chỉ có hiệu lực trong phạm vi đến khi kết thúc của lệnh `if`.
 
-(Try using `v` in the last `return` statement.)
+(Thử sử dụng `v` sau khi đã gọi lệnh `return`.)
 
 .play flowcontrol/if-with-a-short-statement.go
 
-* If and else
+* If và else
 
-Variables declared inside an `if` short statement are also available inside any
-of the `else` blocks.
+Các biến được khai báo bên trong `if` cũng hiệu lực ở phần bên trong của `else`.
 
-(Both calls to `pow` return their results before the call to `fmt.Println`
-in `main` begins.)
+(Cả 2 lần gọi đến `pow` trả về kết quả của chúng trước khi gọi `fmt.Println` ở trong hàm `main`)
 
 .play flowcontrol/if-and-else.go
 
-* Exercise: Loops and Functions
+* Thực hành: Loop và Function
 
-As a way to play with functions and loops, let's implement a square root function: given a number x, we want to find the number z for which z² is most nearly x.
+Giống như một cách để sử dụng func và loop, hãy triển khai một hàm căn bậc 2:
+đưa ra một số x, chúng ta muốn tìm số z mà giá trị của z² là gần với x nhất.
 
-Computers typically compute the square root of x using a loop.
-Starting with some guess z, we can adjust z based on how close z² is to x,
-producing a better guess:
+Máy tính thường tính căn bậc hai của x bằng cách sử dụng vòng lặp.
+Bắt đầu bằng việc đoán z, chúng ta có thể điều chỉnh z dựa trên việc z² gần với x như thế nào,
+rồi đưa ra một lần thử tốt hơn:
 
 	z -= (z*z - x) / (2*z)
 
-Repeating this adjustment makes the guess better and better
-until we reach an answer that is as close to the actual square root as can be.
+Lặp lại điều chỉnh làm cho những lần đoán tốt hơn và tốt hơn cho đến khi chúng ta chạm đến một câu trả lời mà gần nhất với giá trị căn bậc hai có thể là.
 
-Implement this in the `func`Sqrt` provided.
-A decent starting guess for z is 1, no matter what the input.
-To begin with, repeat the calculation 10 times and print each z along the way.
-See how close you get to the answer for various values of x (1, 2, 3, ...)
-and how quickly the guess improves.
+Triển khai ý tưởng này trong `func`Sqrt`đã được cung cấp.
 
-Hint: To declare and initialize a floating point value,
-give it floating point syntax or use a conversion:
+Một giá trị đoán hợp lệ ban đầu cho z là 1, không quan trọng đầu vào như thế nào.
+Để bắt đầu, lặp lại việc tính toàn 10 lần và in ra z mỗi lần.
+Xem câu trả lời gần như thế nào với các giá trị khác nhau của x (1, 2, 3, ...) và nhanh như thế nào giá trị phỏng đoán được cải thiện.
+
+Nhắc nhở: Để khai báo và khởi tạo giá trị float,
+bạn nên sử dụng quy ước sau:
 
 	z := 1.0
 	z := float64(1)
 
-Next, change the loop condition to stop once the value has stopped
-changing (or only changes by a very small amount).
-See if that's more or fewer than 10 iterations.
-Try other initial guesses for z, like x, or x/2.
-How close are your function's results to the [[https://golang.org/pkg/math/#Sqrt][math.Sqrt]] in the standard library?
+Tiếp theo, thay đổi điều kiện lặp để dừng lại một khi giá trị đã dừng thay đổi (hoặc là giá trị thay đổi trở lên rất rất nhỏ).
+Xem xem nếu nó nhỏ hơn 10 lần lặp.
+Thử một giá trị khởi tạo khác cho z, ví dụ như x hoặc z/2.
+Kết quả của bạn có gần với hàm tiêu chuẩn [[https://golang.org/pkg/math/#Sqrt][math.Sqrt]] hay không?
 
-(*Note:* If you are interested in the details of the algorithm, the z² − x above
-is how far away z² is from where it needs to be (x), and the division by 2z is the derivative
-of z², to scale how much we adjust z by how quickly z² is changing.
-This general approach is called [[https://en.wikipedia.org/wiki/Newton%27s_method][Newton's method]].
-It works well for many functions but especially well for square root.)
-
+(*Chú*ý:* Nếu bạn hứng thú với chi tiết của thuật toán, giá trị `z² − x` ở trên xa như thế nào so với z² nơi mà nó cần phải là (x),
+Và phép chia cho 2z là đạo hàm của z², để chia tỷ lệ chúng tôi điều chỉnh z bằng cách thay đổi nhanh chóng z².
+Phương thức tiếp cận này được gọi là [[https://en.wikipedia.org/wiki/Newton%27s_method][phương thức Newton]].
+Nó hoạt động tốt cho nhiều chức năng nhưng đặc biệt tốt cho căn bậc hai.)
 .play flowcontrol/exercise-loops-and-functions.go
 
 * Switch
 
-A `switch` statement is a shorter way to write a sequence of `if`-`else` statements.
-It runs the first case whose value is equal to the condition expression.
+Một câu lệnh `switch` là một cách ngắn hơn để viết `if`-`else`.
+Nó chạy trường hợp đầu tiên có giá trị bằng biểu thức điều kiện.
 
-Go's switch is like the one in C, C++, Java, JavaScript, and PHP,
-except that Go only runs the selected case, not all the cases that follow.
-In effect, the `break` statement that is needed at the end of each case in those
-languages is provided automatically in Go.
-Another important difference is that Go's switch cases need not
-be constants, and the values involved need not be integers.
+Go switch giống với C, C++, Java, JavaScript, và PHP,
+ngoại trừ rằng Go chỉ chạy những case đã được chọn, không phải tất cả các case.
+Câu lệnh `break` là cần thiết tại cuối của mỗi case của các ngôn ngữ trên được cung cấp tự động trong Go.
+Một điểm quan trọng khác đó là Go switch case cần phải không là hằng số, và các giá trị liên quan cần phải không là số nguyên.
 
 .play flowcontrol/switch.go
 
-* Switch evaluation order
+* Lệnh Switch đánh giá
 
-Switch cases evaluate cases from top to bottom, stopping when a case succeeds.
+Switch case đánh giá các case từ đầu đến cuối, dừng lại khi một case thành công.
 
-(For example,
+(Ví dụ,
 
 	switch i {
 	case 0:
 	case f():
 	}
 
-does not call `f` if `i==0`.)
+không gọi `f` nếu `i==0`.)
 
 #appengine: *Note:* Time in the Go playground always appears to start at
 #appengine: 2009-11-10 23:00:00 UTC, a value whose significance is left as an
@@ -143,36 +134,34 @@ does not call `f` if `i==0`.)
 
 .play flowcontrol/switch-evaluation-order.go
 
-* Switch with no condition
+* Switch khi không có điều kiện
 
-Switch without a condition is the same as `switch`true`.
+Switch mà không có điều kiện là giống với `switch`true`.
 
-This construct can be a clean way to write long if-then-else chains.
+Cấu trúc này có thể là một cách gọn gàn để viết chuỗi dài if-then-else.
 
 .play flowcontrol/switch-with-no-condition.go
 
 * Defer
 
-A defer statement defers the execution of a function until the surrounding
-function returns.
+Một câu lệnh defer trì hoãn việc thực hiện một hàm cho đến khi hàm bao nó return.
 
-The deferred call's arguments are evaluated immediately, but the function call
-is not executed until the surrounding function returns.
+Đối số của việc gọi defer được nhận biết ngay lập tức, nhưng lệnh gọi hàm không được thực thi cho đến khi hàm bao nó return.
 
 .play flowcontrol/defer.go
 
-* Stacking defers
+* Ngăn xếp defer
 
-Deferred function calls are pushed onto a stack. When a function returns, its
-deferred calls are executed in last-in-first-out order.
+Một lời gọi hàm defer được đẩy vào một ngăn xếp.
+Khi một hàm return, các lời gọi defer mới được thực thi theo thứ tự cuối cùng ra trước.
 
-To learn more about defer statements read this
+Để học thêm về defer bạn có thể ghé thăm
 [[https://blog.golang.org/defer-panic-and-recover][blog post]].
 
 .play flowcontrol/defer-multi.go
 
-* Congratulations!
+* Chúc mừng!
 
-You finished this lesson!
+Bạn đã hoàn thành bài học này!
 
-You can go back to the list of [[/list][modules]] to find what to learn next, or continue with the [[javascript:click('.next-page')][next lesson]].
+Bạn có thể quay trở lại [[/list][modules]] để tìm kiếm cái gì đó để học tiếp theo, hoặc tiếp tục với [[javascript:click('.next-page')][bài kế tiếp]].

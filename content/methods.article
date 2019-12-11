@@ -1,250 +1,232 @@
-Methods and interfaces
-This lesson covers methods and interfaces, the constructs that define objects and their behavior.
+Method và interface
+Bài học này nói về method và interface, những cấu trúc định nghĩa đối tượng và các hành vi của nó (lập trình hướng đối tượng)
 
-The Go Authors
+Tác giả của Go
 https://golang.org
 
-* Methods
+* Method
 
-Go does not have classes.
-However, you can define methods on types.
+Go không hề có class.
+Tuy nhiên bạn có thể định nghĩa method cho các kiểu biến.
 
-A method is a function with a special _receiver_ argument.
+Một method là một hàm với một đối số đặc biệt.
 
-The receiver appears in its own argument list between the `func` keyword and
-the method name.
+Cái đối số này được xuất hiện ở giữa từ khóa `func` và tên hàm.
 
-In this example, the `Abs` method has a receiver of type `Vertex` named `v`.
+Trong ví dụ này, Method `Abs` thuộc về kiểu `Vertex` và tên đối số là `v`.
 
 .play methods/methods.go
 
-* Methods are functions
+* Method là hàm
 
-Remember: a method is just a function with a receiver argument.
+Nhớ rằng: một method chỉ là một hàm cùng với đối số đặc biệt.
 
-Here's `Abs` written as a regular function with no change in functionality.
+Tại đây hàm `Abs` đã được viết như là một hàm không đổi về mặt chức năng.
 
 .play methods/methods-funcs.go
 
-* Methods continued
+* Tiếp tục về Method
 
-You can declare a method on non-struct types, too.
+Bạn cũng có thể khai báo một method với không phải là kiểu struct
 
-In this example we see a numeric type `MyFloat` with an `Abs` method.
+Trong ví dụ này chúng ta thấy kiểu số `MyFloat` có method là `Abs`.
 
-You can only declare a method with a receiver whose type is defined in the same
-package as the method.
-You cannot declare a method with a receiver whose type is defined in another
-package (which includes the built-in types such as `int`).
+Bạn chỉ có thể khai báo một method với kiểu sở hữu được định nghĩa trong cùng một package với method mà thôi.
+Bạn không thể khai báo một method với kiểu sở hữu được định nghĩa ở trong một package khác.
+(ví dụ như kiểu built-in `int` chẳng hạn).
 
 .play methods/methods-continued.go
 
-* Pointer receivers
+* Method và con trỏ
 
-You can declare methods with pointer receivers.
+Bạn có thể khai bao method với trỏ đến kiểu sở hữu.
 
-This means the receiver type has the literal syntax `*T` for some type `T`.
-(Also, `T` cannot itself be a pointer such as `*int`.)
+Điều này nghĩa là kiểu sở hữu có cú pháp `*T` thay vì `T`.
+(Lưu ý rằng `T` ở đây không thể là con trỏ đến kiểu khác ví dụ như `*int`)
 
-For example, the `Scale` method here is defined on `*Vertex`.
+Ví dụ, method `Scale` ở đây được định nghĩa cho `*Vertex`.
 
-Methods with pointer receivers can modify the value to which the receiver
-points (as `Scale` does here).
-Since methods often need to modify their receiver, pointer receivers are more
-common than value receivers.
+Method con trỏ có thể sửa giá trị mà nó trỏ đến (như thể `Scale` đã làm ở đây)
+Kể từ khi method thường cần sửa giá trị của kiểu sở hữu, con trỏ thường hay được sử dụng hơn.
 
-Try removing the `*` from the declaration of the `Scale` function on line 16
-and observe how the program's behavior changes.
+Thử bỏ đi `*` ở hàm `Scale` ở dòng 16 và xem những thay đổi.
 
-With a value receiver, the `Scale` method operates on a copy of the original
-`Vertex` value.
-(This is the same behavior as for any other function argument.)
-The `Scale` method must have a pointer receiver to change the `Vertex` value
-declared in the `main` function.
+Không có con trỏ, method hoạt động trên một biến được sao chép từ biến ban đầu. (Điều này cũng tương tự với các đối số của hàm)
+Method `Scale` phải có con trỏ để thay đổi giá trị của `Vertex` được khai báo trong hàm `main`.
 
 .play methods/methods-pointers.go
 
-* Pointers and functions
+* Con trỏ và function
 
-Here we see the `Abs` and `Scale` methods rewritten as functions.
+Tại đây chúng ta thấy method `Abs` và `Scale` được viết lại thành hàm.
 
-Again, try removing the `*` from line 16.
-Can you see why the behavior changes?
-What else did you need to change for the example to compile?
+Một lần nữa thử bỏ đi `*` ở dòng 16.
+Bạn có thể thấy tại sao hành vi thay đổi không?
+Còn gì nữa bạn cần thay đổi cho ví dụ đó?
 
-(If you're not sure, continue to the next page.)
+(Nếu bạn không chắc, hãy tiếp tục tới trang tiếp theo)
 
 .play methods/methods-pointers-explained.go
 
-* Methods and pointer indirection
+* Method và con trỏ gián tiếp
 
-Comparing the previous two programs, you might notice that
-functions with a pointer argument must take a pointer:
+So sánh với 2 chương trình trước, bạn có thể nhận thấy rằng hàm với một biến con trỏ phải truyền vào một giá trị con trỏ:
 
 	var v Vertex
 	ScaleFunc(v, 5)  // Compile error!
 	ScaleFunc(&v, 5) // OK
 
-while methods with pointer receivers take either a value or a pointer as the
-receiver when they are called:
+Trong khi method với con trỏ trực tiếp có thể nhận hoặc là giá trị hoặc là con trỏ khi chúng ta gọi:
 
 	var v Vertex
 	v.Scale(5)  // OK
 	p := &v
 	p.Scale(10) // OK
 
-For the statement `v.Scale(5)`, even though `v` is a value and not a pointer,
-the method with the pointer receiver is called automatically.
-That is, as a convenience, Go interprets the statement `v.Scale(5)` as
-`(&v).Scale(5)` since the `Scale` method has a pointer receiver.
+Với câu lệnh `v.Scale(5)`, ngay cả khi `v` là một giá trị và không phải là con trỏ,
+method với con trỏ được gọi một cách tự động.
+Đó là, theo như quy ước, Go phiên dịch `v.Scale(5)` thành `(&v).Scale(5)` vì method `Scale` được gán cho một con trỏ.
 
 .play methods/indirection.go
 
-* Methods and pointer indirection (2)
+* Method và con trỏ gián tiếp (2)
 
-The equivalent thing happens in the reverse direction.
+Điều tương đương xảy ra theo hướng ngược lại.
 
-Functions that take a value argument must take a value of that specific type:
+Hàm mà được định nghĩa đối số truyền vào là giá trị phải được truyền vào kiểu đã chỉ định:
 
 	var v Vertex
 	fmt.Println(AbsFunc(v))  // OK
 	fmt.Println(AbsFunc(&v)) // Compile error!
 
-while methods with value receivers take either a value or a pointer as the
-receiver when they are called:
+Trong khi method với giá trị trỏ đến có thể gọi qua giá trị hoặc con trỏ đều ok hết:
 
 	var v Vertex
 	fmt.Println(v.Abs()) // OK
 	p := &v
 	fmt.Println(p.Abs()) // OK
 
-In this case, the method call `p.Abs()` is interpreted as `(*p).Abs()`.
+Trong trường hợp này, method gọi `p.Abs()` được thông dịch thành `(*p).Abs()`.
 
 .play methods/indirection-values.go
 
-* Choosing a value or pointer receiver
+* Chọn con trỏ hay là không?
 
-There are two reasons to use a pointer receiver.
+Có 2 lý do để sử dụng con trỏ
 
-The first is so that the method can modify the value that its receiver points to.
+Đầu tiên là method có thể sửa giá trị của kiểu sở hữu nó.
 
-The second is to avoid copying the value on each method call.
-This can be more efficient if the receiver is a large struct, for example.
+Thứ 2 là tránh việc phải sao chép giá trị của biến sở hữu method mỗi lần gọi.
+Điều này có thể hiệu quả hơn nếu kiểu sở hữu là một cái struct lớn. ví dụ:
 
-In this example, both `Scale` and `Abs` are with receiver type `*Vertex`,
-even though the `Abs` method needn't modify its receiver.
+Trong ví dụ này, cả `Scale` và `Abs` với kiểu sở hữu là `*Vertex`,
+ngay cả thông qua `Abs`, method không cần sửa kiểu sở hữu của nó.
 
-In general, all methods on a given type should have either value or pointer
-receivers, but not a mixture of both.
-(We'll see why over the next few pages.)
+Nói chung, tất cả method trên một kiểu nhất định có hoặc là dùng con trỏ hoặc là không,
+nhưng không thể cùng lúc cả hai.
+(Chúng ta sẽ xem tại sao sau vài bài nữa.)
 
 .play methods/methods-with-pointer-receivers.go
 
-* Interfaces
+* Interface
 
-An _interface_type_ is defined as a set of method signatures.
+Một _kiểu_interface_ được định nghĩa để đăng ký trước method.
 
-A value of interface type can hold any value that implements those methods.
+Một giá trị của interface có thể giữ bất kỳ kiểu nào mà triền khai những method đó.
 
-*Note:* There is an error in the example code on line 22.
-`Vertex` (the value type) doesn't implement `Abser` because
-the `Abs` method is defined only on `*Vertex` (the pointer type).
+*Chú ý:* Có một lỗi trong code ở dòng 22.
+`Vertex` không hề triển khai `Abser` bởi vì method `Abs` được định nghĩa chỉ cho `*Vertex` (kiểu con trỏ).
 
 .play methods/interfaces.go
 
-* Interfaces are implemented implicitly
+* Interface được triển khai ngầm
 
-A type implements an interface by implementing its methods.
-There is no explicit declaration of intent, no "implements" keyword.
+Một kiểu triển khai một interface bằng cách triển khai các method của nó.
+Không cần phải tuyên bố rõ ràng, không có từ khóa "implements" (triển khai).
 
-Implicit interfaces decouple the definition of an interface from its
-implementation, which could then appear in any package without prearrangement.
+Interface ngầm tách dời việc định nghĩa của interface khỏi việc triển khai của nó,
+cái mà sau đó có thể xuất hiện trong bất kỳ package nào mà không cần chuẩn bị trước.
+(Nôm na là bạn ko cần phải khai báo một kiểu thuộc interface nào,
+bạn chỉ cần triển khai các method của interface đó là nó có thể coi như là đã triển khai interface đó. Nếu vẫn chưa hiểu thì thực hành nhiều thôi :)) )
 
 .play methods/interfaces-are-satisfied-implicitly.go
 
-* Interface values
+* giá trị của Interface
 
-Under the hood, interface values can be thought of as a tuple of a value and a
-concrete type:
+Đi vào chi tiết, giá trị của interface có thể được xem như một bộ của của giá trị và kiểu cụ thể:
 
 	(value, type)
 
-An interface value holds a value of a specific underlying concrete type.
-
-Calling a method on an interface value executes the method of the same name on
-its underlying type.
+Gọi một method của một interface sẽ thực thi cái method cùng tên của kiểu đằng sau interface đó.
 
 .play methods/interface-values.go
 
-* Interface values with nil underlying values
+* Giá trị của Interface nil
 
-If the concrete value inside the interface itself is nil,
-the method will be called with a nil receiver.
+Nếu giá trị bên trong của interface là nil, method sẽ được gọi bởi đối tượng nil.
 
-In some languages this would trigger a null pointer exception,
-but in Go it is common to write methods that gracefully handle being called
-with a nil receiver (as with the method `M` in this example.)
+Ở một số ngôn ngữ, điều này sẽ gọi đến một lỗi con trỏ null exception,
+nhưng với Go, nó khá phổ thông để viết các method mà xử lý được gọi với đối tượng là nil (giống như method `M` ở trong ví dụ này.)
 
-Note that an interface value that holds a nil concrete value is itself non-nil.
+Chú ý rằng một interface mà giữ một giá trị cụ thể là nil thì bản thân interface đó là not-nil.
 
 .play methods/interface-values-with-nil.go
 
-* Nil interface values
+* Interface Nil
 
-A nil interface value holds neither value nor concrete type.
+Một interface nil không giữ giá trị cũng không giữ một kiểu.
 
-Calling a method on a nil interface is a run-time error because there is no
-type inside the interface tuple to indicate which _concrete_ method to call.
+Việc gọi một method vào một interface nil sẽ gặp lỗi run-time bởi vì không có kiểu nào bên trong interface đó để mà gọi một method.
 
 .play methods/nil-interface-values.go
 
-* The empty interface
+* Interface rỗng
 
-The interface type that specifies zero methods is known as the _empty_interface_:
+Một kiểu interface mà không định nghĩa method nào được biết đến là interface rỗng:
 
 	interface{}
 
-An empty interface may hold values of any type.
-(Every type implements at least zero methods.)
+Một interface rỗng có thể giữ giá trị của bất kỳ kiểu nào.
 
-Empty interfaces are used by code that handles values of unknown type.
-For example, `fmt.Print` takes any number of arguments of type `interface{}`.
+Các interface rỗng được sử dụng trng code mà sử lý các giá trị với kiểu không biết.
+Ví dụ, `fmt.Print` có thể truyền vào bất kỳ số lượng đối số nào của kiểu `interface{}`
 
 .play methods/empty-interface.go
 
-* Type assertions
+* Type assertions (Khẳng định kiểu)
 
-A _type_assertion_ provides access to an interface value's underlying concrete value.
+Một _type_assertion_ cung cấp việc truy cập đến giá trị của một interface dưới một giá trị cụ thể.
 
 	t := i.(T)
 
-This statement asserts that the interface value `i` holds the concrete type `T`
-and assigns the underlying `T` value to the variable `t`.
+Câu lệnh này khẳng định rằng interface `i` lưu giữ kiểu `T`
+và gán một giá trị của kiểu `T` cho biến `t`.
 
-If `i` does not hold a `T`, the statement will trigger a panic.
+Nếu `i` không giữ kiểu `T`, sẽ xảy ra `panic`.
 
-To _test_ whether an interface value holds a specific type,
-a type assertion can return two values: the underlying value
-and a boolean value that reports whether the assertion succeeded.
+Để _test_ liệu rằng một interface có giữ một kiểu nào đó không,
+_type_assertion_ có thể trả về hai giá trị:
+giá trị chỉ định và một giá trị boolean mà báo cáo rằng việc khẳng định kiểu có thành công hay không.
 
 	t, ok := i.(T)
 
-If `i` holds a `T`, then `t` will be the underlying value and `ok` will be true.
+Nếu `i` giữ giá trị của kiểu `T`, vậy thì `t` sẽ có giá trị và `ok` sẽ bằng true.
 
-If not, `ok` will be false and `t` will be the zero value of type `T`,
-and no panic occurs.
+Nếu không `ok` sẽ bằng false và `t` là bằng zero của kiểu `T`
+và không có panic xảy ra.
 
-Note the similarity between this syntax and that of reading from a map.
+
+Lưu ý sự giống nhau giữa cú pháp này và get giá trị từ map.
 
 .play methods/type-assertions.go
 
-* Type switches
+* Type switch (switch kiểu)
 
-A _type_switch_ is a construct that permits several type assertions in series.
+Một _type_switch_ là một cấu trúc cho phép khẳng định kiểu.
 
-A type switch is like a regular switch statement, but the cases in a type
-switch specify types (not values), and those values are compared against
-the type of the value held by the given interface value.
+Một type switch giống như câu lệnh switch thông thường,
+nhưng case được chỉ định là kiểu biến chứ không phải giá trị của biến,
+và các giá trị này được so sánh với kiểu mà được giữ ở trong cái interface đó.
 
 	switch v := i.(type) {
 	case T:
@@ -255,55 +237,50 @@ the type of the value held by the given interface value.
 		// no match; here v has the same type as i
 	}
 
-The declaration in a type switch has the same syntax as a type assertion `i.(T)`,
-but the specific type `T` is replaced with the keyword `type`.
+Việc khai báo ở trong type switch có cùng cú pháp với khẳng định kiểu `i.(T)`,
+nhưng thay thế `T` bởi từ khóa `type`
 
-This switch statement tests whether the interface value `i`
-holds a value of type `T` or `S`.
-In each of the `T` and `S` cases, the variable `v` will be of type
-`T` or `S` respectively and hold the value held by `i`.
-In the default case (where there is no match), the variable `v` is
-of the same interface type and value as `i`.
+Ví dụ này kiểm tra xem interface `i` giữ giá trị của kiểu `T` hay là `S`.
+Trong mỗi trường hợp của `T` và `S`, giá trị `v` sẽ là kiểu `T` hoặc `S`
+và lưu trữ giá trị tương ứng trong `i`.
+Trong trường hợp mặc định(không cái nào trùng khớp), giá trị của `v` là cùng kiểu interface và giá trị là `i`.
 
 .play methods/type-switches.go
 
 * Stringers
-
-One of the most ubiquitous interfaces is [[//golang.org/pkg/fmt/#Stringer][`Stringer`]] defined by the [[//golang.org/pkg/fmt/][`fmt`]] package.
+Một trong số những interface phổ biến nhất là [[//golang.org/pkg/fmt/#Stringer][`Stringer`]] được định nghĩa bởi package [[//golang.org/pkg/fmt/][`fmt`]].
 
 	type Stringer interface {
 		String() string
 	}
 
-A `Stringer` is a type that can describe itself as a string. The `fmt` package
-(and many others) look for this interface to print values.
+Một `Stringer` là một kiểu mà có thể miêu tả bản thân nó như là một string. Package `fmt` (và nhiều package khác)
+sử dụng interface này để in giá trị của nó ra.
 
 .play methods/stringer.go
 
-* Exercise: Stringers
+* Thực hành: Stringers
 
-Make the `IPAddr` type implement `fmt.Stringer` to print the address as
-a dotted quad.
+Tạo kiểu `IPAddr` triển khai `fmt.Stringer` để in địa chỉ của ip
 
-For instance, `IPAddr{1,`2,`3,`4}` should print as `"1.2.3.4"`.
+Ví dụ, `IPAddr{1,`2,`3,`4}` sẽ in ra `"1.2.3.4"`.
 
 .play methods/exercise-stringer.go
 
 * Errors
 
-Go programs express error state with `error` values.
+Go bày tỏ lỗi (error) với kiểu `error`.
 
-The `error` type is a built-in interface similar to `fmt.Stringer`:
+Kiểu `error` là một built-in interface tương tự như `fmt.Stringer`:
 
 	type error interface {
 		Error() string
 	}
 
-(As with `fmt.Stringer`, the `fmt` package looks for the `error` interface when
-printing values.)
+(giống như `fmt.Stringer`, package `fmt` sử dụng interface `error`  khi in ra giá trị.)
 
-Functions often return an `error` value, and calling code should handle errors
-by testing whether the error equals `nil`.
+Các hàm thường trả về một giá trị `error`, và việc gọi code nên sử lý lỗi bằng cách kiểm tra xem
+error có bằng `nil` hay không.
 
 	i, err := strconv.Atoi("42")
 	if err != nil {
@@ -312,76 +289,77 @@ by testing whether the error equals `nil`.
 	}
 	fmt.Println("Converted integer:", i)
 
-A nil `error` denotes success; a non-nil `error` denotes failure.
+`error` nil là thành công; `error` non-nil là thất bại.
 
 .play methods/errors.go
 
-* Exercise: Errors
+* Thực hành: Errors
 
-Copy your `Sqrt` function from the [[/flowcontrol/8][earlier exercise]] and modify it to return an `error` value.
+Sao chép hàm `Sqrt` của bạn từ [[/flowcontrol/8][earlier exercise]] và sửa nó để trả về một biến `error`.
 
-`Sqrt` should return a non-nil error value when given a negative number, as it doesn't support complex numbers.
+`Sqrt` nên trả về một error not-nil khi nó nhận một biến âm, như thể là nó không hỗ trợ một số phức.
 
-Create a new type
+Tạo một kiểu mới
 
 	type ErrNegativeSqrt float64
 
-and make it an `error` by giving it a
+và tạo cho nó một `error` bằng cách định nghĩa cho nó một method
 
 	func (e ErrNegativeSqrt) Error() string
 
-method such that `ErrNegativeSqrt(-2).Error()` returns `"cannot`Sqrt`negative`number:`-2"`.
+method ví dụ như `ErrNegativeSqrt(-2).Error()` trả về `"cannot`Sqrt`negative`number:`-2"`.
 
-*Note:* A call to `fmt.Sprint(e)` inside the `Error` method will send the program into an infinite loop. You can avoid this by converting `e` first: `fmt.Sprint(float64(e))`. Why?
+*Chú ý:* gọi đến `fmt.Sprint(e)` bên trong method `Error` tạo ra một vòng lặp vô hạn. Bạn có thể tránh điều này bằng chuyển `e` trước:
+`fmt.Sprint(float64(e))`. Tại sao?
 
-Change your `Sqrt` function to return an `ErrNegativeSqrt` value when given a negative number.
+Thay đổi hàm `Sqrt` để trả về `ErrNegativeSqrt` khí nó nhận một số âm.
 
 .play methods/exercise-errors.go
 
 * Readers
 
-The `io` package specifies the `io.Reader` interface,
-which represents the read end of a stream of data.
+Package `io` định nghĩa interface `io.Reader`.
+cái mà đại diện cho việc đọc của truyền dữ liệu(stream of data).
 
-The Go standard library contains [[https://golang.org/search?q=Read#Global][many implementations]] of these interfaces, including files, network connections, compressors, ciphers, and others.
+Thư viện tiêu chuẩn của Go bao gồm [[https://golang.org/search?q=Read#Global][many implementations]] của interface này,
+bao gồm file, kết nối mạng, compressors, ciphers, và nhiều nữa.
 
-The `io.Reader` interface has a `Read` method:
+Interface `io.Reader`  có một method `Read`:
 
 	func (T) Read(b []byte) (n int, err error)
+`Read` truyền vào dữ liệu byte và trả về sô byte đã được truyền và một giá trị error.
+Nó trả về một error `io.EOF` khi việc truyền kết thúc.
 
-`Read` populates the given byte slice with data and returns the number of bytes
-populated and an error value. It returns an `io.EOF` error when the stream
-ends.
-
-The example code creates a
+Code ví dụ tạo một
 [[//golang.org/pkg/strings/#Reader][`strings.Reader`]]
-and consumes its output 8 bytes at a time.
+và tiêu thụ 8 byte của nó một lần.
 
 .play methods/reader.go
 
-* Exercise: Readers
+* Bài tập: Readers
 
-Implement a `Reader` type that emits an infinite stream of the ASCII character
-`'A'`.
+Triển khai một kiểu `Reader` mà phát ra một dòng dữ liệu vô hạn của ký tự `'A'` (ASCII).
 
 .play methods/exercise-reader.go
 
-* Exercise: rot13Reader
+* Bài tập: rot13Reader
 
-A common pattern is an [[https://golang.org/pkg/io/#Reader][io.Reader]] that wraps another `io.Reader`, modifying the stream in some way.
+Một parttern phổ biến là một [[https://golang.org/pkg/io/#Reader][io.Reader]] mà bao một `io.Reader` khác, sửa dòng dữ liệu (stream) theo một số cách.
 
-For example, the [[https://golang.org/pkg/compress/gzip/#NewReader][gzip.NewReader]] function takes an `io.Reader` (a stream of compressed data) and returns a `*gzip.Reader` that also implements `io.Reader` (a stream of the decompressed data).
+Ví dụ, hàm [[https://golang.org/pkg/compress/gzip/#NewReader][gzip.NewReader]]
+lấy một `io.Reader`(một luồng dữ liệu nén) và trả về một `*gzip.Reader` mà triển khai một `io.Reader`(một luồng dữ liệu giải nén)
 
-Implement a `rot13Reader` that implements `io.Reader` and reads from an `io.Reader`, modifying the stream by applying the [[https://en.wikipedia.org/wiki/ROT13][rot13]] substitution cipher to all alphabetical characters.
+Triển khai một `rot13Reader` mà triển khai `io.Reader` và đọc từ một `io.Reader`,
+sửa luồng dữ liệu bằng cách ứng dụng  [[https://en.wikipedia.org/wiki/ROT13][rot13]] cho tất cả các ký tự alphabe.
 
-The `rot13Reader` type is provided for you.
-Make it an `io.Reader` by implementing its `Read` method.
+Kiểu `rot13Reader` được cung cấp cho bạn.
+Tạo một `io.Reader` bằng cách triển khai method `Read` của nó.
 
 .play methods/exercise-rot-reader.go
 
 * Images
 
-[[https://golang.org/pkg/image/#Image][Package image]] defines the `Image` interface:
+[[https://golang.org/pkg/image/#Image][Package image]] định nghĩa interface của `Image`:
 
 	package image
 
@@ -390,33 +368,37 @@ Make it an `io.Reader` by implementing its `Read` method.
 		Bounds() Rectangle
 		At(x, y int) color.Color
 	}
+*Chú ý:* `Rectangle` trả về giá trị của method `Bounds` mà thực ra là một[[https://golang.org/pkg/image/#Rectangle][`image.Rectangle`]],
+giống như được khai báo bên trong package `image`
 
-*Note*: the `Rectangle` return value of the `Bounds` method is actually an
-[[https://golang.org/pkg/image/#Rectangle][`image.Rectangle`]], as the
-declaration is inside package `image`.
+(Xem [[https://golang.org/pkg/image/#Image][the documentation]] để biết thêm chi tiết.)
 
-(See [[https://golang.org/pkg/image/#Image][the documentation]] for all the details.)
-
-The `color.Color` and `color.Model` types are also interfaces, but we'll ignore that by using the predefined implementations `color.RGBA` and `color.RGBAModel`. These interfaces and types are specified by the [[https://golang.org/pkg/image/color/][image/color package]]
+Kiểu `color.Color` và `color.Model` cũng là interface,
+nhưng chúng ta sẽ bỏ qua nó bằng cách sử dụng interface đã được định nghĩa trước:  `color.RGBA` và `color.RGBAModel`.
+Những interface này và kiểu được đặc tả bởi [[https://golang.org/pkg/image/color/][image/color package]]
 
 .play methods/images.go
 
-* Exercise: Images
+* Thực hành: Images
 
-Remember the [[/moretypes/18][picture generator]] you wrote earlier? Let's write another one, but this time it will return an implementation of `image.Image` instead of a slice of data.
+Có còn nhớ [[/moretypes/18][picture generator]] bạn đã viết trước đây?
+Hãy viết một cái khác, nhưng lần này nó sẽ trả về một sự triển khai của `image.Image` thay vì các lát cắt của dữ liệu.
 
-Define your own `Image` type, implement [[https://golang.org/pkg/image/#Image][the necessary methods]], and call `pic.ShowImage`.
+Định nghĩa kiểu dữ liệu `Image` của bạn, triển khai [[https://golang.org/pkg/image/#Image][các method cần thiết]],
+và gọi `pic.ShowImage`.
 
-`Bounds` should return a `image.Rectangle`, like `image.Rect(0,`0,`w,`h)`.
+`Bounds` nên trả về một `image.Rectangle`, như thể là `image.Rect(0,`0,`w,`h)`.
 
-`ColorModel` should return `color.RGBAModel`.
+`ColorModel` nên trả về `color.RGBAModel`.
 
-`At` should return a color; the value `v` in the last picture generator corresponds to `color.RGBA{v,`v,`255,`255}` in this one.
+`At` nên trả về màu sắc;
+giá trị `v` ở trong picture generator tương ứng với `color.RGBA{v,`v,`255,`255}`.
 
 .play methods/exercise-images.go
 
-* Congratulations!
+* Chúc mừng!
 
-You finished this lesson!
+Bạn đã hoàn thành bài học!
 
-You can go back to the list of [[/list][modules]] to find what to learn next, or continue with the [[javascript:click('.next-page')][next lesson]].
+Bạn có thể quay lại danh sách [[/list][modules]] để tìm những thứ cần học tiếp theo,
+hoặc tiếp tục với [[javascript:click('.next-page')][bài kế tiếp]].

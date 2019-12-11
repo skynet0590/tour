@@ -10,22 +10,22 @@ angular.module('tour.values', []).
 value('tableOfContents', [{
     'id': 'mechanics',
     'title': 'Using the tour',
-    'description': '<p>Welcome to a tour of the <a href="https://golang.org">Go programming language</a>. The tour covers the most important features of the language, mainly:</p>',
+    'description': '<p>Chào mừng đến với hành trình của <a href="https://golang.org">ngôn ngữ lập trình Go</a>. Hành trình bao gồm hầu hết những tính năng chính quan trọng của Go</p>',
     'lessons': ['welcome']
 }, {
     'id': 'basics',
-    'title': 'Basics',
-    'description': '<p>The starting point, learn all the basics of the language.</p><p>Declaring variables, calling functions, and all the things you need to know before moving to the next lessons.</p>',
+    'title': 'Cơ bản',
+    'description': '<p>Điểm khởi đầu, học tất cả những điều cơ bản về Go.</p><p>Khai báo biến, cách gọi function, và tất cả những điều bạn cần biết trước khi đến với bài học tiếp theo.</p>',
     'lessons': ['basics', 'flowcontrol', 'moretypes']
 }, {
     'id': 'methods',
-    'title': 'Methods and interfaces',
-    'description': '<p>Learn how to define methods on types, how to declare interfaces, and how to put everything together.</p>',
+    'title': 'Method và interface',
+    'description': '<p>Học cách định nghĩa các method của kiểu biến, làm sao để định nghĩa interface, và làm sao để kết hợp mọi thứ với nhau.</p>',
     'lessons': ['methods']
 }, {
     'id': 'concurrency',
     'title': 'Concurrency',
-    'description': '<p>Go provides concurrency features as part of the core language.</p><p>This module goes over goroutines and channels, and how they are used to implement different concurrency patterns.</p>',
+    'description': '<p>Go cung cấp tính năng concurrency(chạy đồng thời) như thể là một phần cốt lõi của nó.</p><p>Phần này đi qua goroutine và channel, và làm thế nào chúng được sử dụng để triển khai các kiểu mẫu concurrency khác nhau.</p>',
     'lessons': ['concurrency']
 }]).
 
@@ -151,7 +151,7 @@ value('mapping', {
     '#58': '/methods/13', // Web servers
     '#59': '/methods/14', // Exercise: HTTP Handlers
     '#60': '/methods/15', // Images
-    '#61': '/methods/16', // Exercise: Images
+    '#61': '/methods/16', // Bài tập: Images
     '#62': undefined, // Exercise: Rot13 Reader
     '#63': undefined, // Concurrency
     '#64': '/concurrency/1', // Goroutines

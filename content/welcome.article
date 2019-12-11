@@ -1,74 +1,74 @@
-Welcome!
-Learn how to use this tour: including how to navigate the different lessons and how to run code.
+Chào mừng!
+Học cách sử dụng hành trình này: bao gồm làm sao để đi đến các bài học khác nhau và làm sao để chạy code
 
-The Go Authors
+Tác giả của Go
 https://golang.org
 
-* Hello, 世界
+* Hello World
 
-Welcome to a tour of the [[https://golang.org/][Go programming language]].
+Chào mừng đến với hành trình của [[https://golang.org/][ngôn ngữ lập trình Go]].
 
-The tour is divided into a list of modules that you can
-access by clicking on
-[[javascript:highlight(".logo")][A Tour of Go]] on the top left of the page.
+Hành trình được chia thành danh sách các phần mà bạn có thể
+truy cập bằng cách click vào
+[[javascript:highlight(".logo")][Hành trình của Go]] ở phía trên bên trái của trang web.
 
-You can also view the table of contents at any time by clicking on the [[javascript:highlightAndClick(".nav")][menu]] on the top right of the page.
+Bạn cũng có thể bảng nội dụng bất kỳ lúc nào khi click vào [[javascript:highlightAndClick(".nav")][menu]] ở phía trên bên phải của trang web
 
-Throughout the tour you will find a series of slides and exercises for you
-to complete.
+Thông qua hành trình bạn sẽ tìm thấy một loạt các slide và bài tập dành cho bạn
+để bạn hoàn thành nó.
 
-You can navigate through them using
+Bạn có thể đi qua nó bằng cách sử dụng
 
-- [[javascript:highlight(".prev-page")]["previous"]] or `PageUp` to go to the previous page,
+- [[javascript:highlight(".prev-page")]["previous"]] hoặc bấm `PageUp` để đến trang trước,
 
-- [[javascript:highlight(".next-page")]["next"]] or `PageDown` to go to the next page.
+- [[javascript:highlight(".next-page")]["next"]] hoặc bấm `PageDown` để đến trang tiếp theo.
 
+Hành trình đầy tính tương tác. Click vào
 The tour is interactive. Click the
-[[javascript:highlightAndClick("#run")][Run]] button now
-(or press `Shift` + `Enter`) to compile and run the program on
+nút [[javascript:highlightAndClick("#run")][Run]]
+(hoặc bấm `Shift` + `Enter`) để biên dịch và chạy chương trình trên
 #appengine: a remote server.
-your computer.
-The result is displayed below the code.
+máy tính của bạn.
+Kết quả sẽ được hiển thị ở bên dưới của code
 
-These example programs demonstrate different aspects of Go. The programs in the tour are meant to be starting points for your own experimentation.
+Những ví dụ chứng minh cho các khía cạnh khác nhau của Go. Các chương trình ở đây là ý nghĩa để làm điểm khởi đầu cho trải nghiệm lập trình của bản thân bạn
 
-Edit the program and run it again.
+Sửa chương trình và chạy nó lại một lần nữa
 
-When you click on [[javascript:highlightAndClick("#format")][Format]]
-(shortcut: `Ctrl` + `Enter`), the text in the editor is formatted using the
-[[https://golang.org/cmd/gofmt/][gofmt]] tool. You can switch syntax highlighting on and off
-by clicking on the [[javascript:highlightAndClick(".syntax-checkbox")][syntax]] button.
+Khi bạn click vào [[javascript:highlightAndClick("#format")][Format]]
+(phím tắt: `Ctrl` + `Enter`), mã code ở trong trình soạn thảo sẽ đc format bằng cách sử dụng
+công cụ [[https://golang.org/cmd/gofmt/][gofmt]] .Bạn có thể làm nổi bật cú pháp hoặc là không
+bằng cách click vào nút [[javascript:highlightAndClick(".syntax-checkbox")][syntax]].
 
-When you're ready to move on, click the [[javascript:highlightAndClick(".next-page")][right arrow]] below or type the `PageDown` key.
+Khi nào bạn sẵn sàng đến với bài tiếp theo. Click vào [[javascript:highlightAndClick(".next-page")][right arrow]] ở bên dưới hoặc bấm nút `PageDown` trên bàn phím
 
 .play welcome/hello.go
 
 * Go local
+Hành trình này còn có sẵn với các ngôn ngữ khác:
 
-The tour is available in other languages:
-
-- [[https://go-tour-ar.appspot.com/][Arabic — العربية]]
-- [[https://go-tour-br.appspot.com/][Brazilian Portuguese — Português do Brasil]]
+- [[https://go-tour-ar.appspot.com/][Ả rập — العربية]]
+- [[https://go-tour-br.appspot.com/][Tiếng Bồ Đào Nha của người Brazil — Português do Brasil]]
 - [[https://go-tour-ca.appspot.com/][Catalan — Català]]
-- [[https://tour.go-zh.org/][Simplified Chinese — 中文（简体）]]
-- [[https://go-tour-zh-tw.appspot.com/][Traditional Chinese — 中文（繁體）]]
-- [[https://go-tour-cz.appspot.com/][Czech — Česky]]
-- [[https://go-tour-fr.appspot.com/][French — Français]]
-- [[https://go-tour-de.appspot.com/][German — Deutsch]]
-- [[https://go-tour-he.appspot.com/][Hebrew — עִבְרִית]]
-- [[https://go-tour-id2.appspot.com/][Indonesian — Bahasa Indonesia]]
-- [[https://go-tour-ita.appspot.com/][Italian — Italiano]]
-- [[https://go-tour-jp.appspot.com/][Japanese — 日本語]]
-- [[https://go-tour-kr.appspot.com/][Korean — 한국어]]
-- [[https://go-tour-ro.appspot.com/][Romanian — Română]]
-- [[https://go-tour-ru-ru.appspot.com/][Russian - Русский]]
-- [[https://gotour-es.appspot.com/][Spanish — Español]]
-- [[https://go-tour-th.appspot.com/][Thai - ภาษาไทย]]
-- [[https://go-tour-turkish.appspot.com/][Turkish - Türkçe]]
-- [[https://go-tour-ua.appspot.com/][Ukrainian — Українська]]
-- [[https://go-tour-uz.appspot.com/][Uzbek — Ўзбекча]]
+- [[https://tour.go-zh.org/][Tiếng Tàu giản thể — 中文（简体）]]
+- [[https://go-tour-zh-tw.appspot.com/][Tiếng Tàu phồn thể — 中文（繁體）]]
+- [[https://go-tour-cz.appspot.com/][Séc — Česky]]
+- [[https://go-tour-fr.appspot.com/][Pháp — Français]]
+- [[https://go-tour-de.appspot.com/][Đức — Deutsch]]
+- [[https://go-tour-he.appspot.com/][Tiếng Do Thái — עִבְרִית]]
+- [[https://go-tour-id2.appspot.com/][Indonesia — Bahasa Indonesia]]
+- [[https://go-tour-ita.appspot.com/][Ý — Italiano]]
+- [[https://go-tour-jp.appspot.com/][Nhật — 日本語]]
+- [[https://go-tour-kr.appspot.com/][Hàn — 한국어]]
+- [[https://go-tour-ro.appspot.com/][Rumani — Română]]
+- [[https://go-tour-ru-ru.appspot.com/][Nga ngố - Русский]]
+- [[https://gotour-es.appspot.com/][Tây Ban Nha — Español]]
+- [[https://go-tour-th.appspot.com/][Thái - ภาษาไทย]]
+- [[https://go-tour-turkish.appspot.com/][Thổ Nhĩ Kỳ - Türkçe]]
+- [[https://go-tour-ua.appspot.com/][Ukraina — Українська]]
+- [[https://go-tour-uz.appspot.com/][Uzbekistan — Ўзбекча]]
 
-Click the [[javascript:highlightAndClick(".next-page")]["next"]] button or type `PageDown` to continue.
+Bấm vào nút [[javascript:highlightAndClick(".next-page")]["next"]] hoặc gõ `PageDown` để tiếp tục.
 
 #appengine: * Go offline (optional)
 #appengine:
@@ -108,9 +108,9 @@ Click the [[javascript:highlightAndClick(".next-page")]["next"]] button or type 
 #appengine:
 #appengine: .play welcome/sandbox.go
 
-* Congratulations
+* Chào mừng
 
-You've finished the first module of the tour!
+Bạn vừa mới hoàn thành phần đầu tiên của hành trình!
 
-Now click on [[javascript:highlightAndClick(".logo")][A Tour of Go]] to find out what else
-you can learn about Go, or go directly to the [[javascript:click('.next-page')][next lesson]].
+Bây giờ bấm vào [[javascript:highlightAndClick(".logo")][Hành trình của Go]] để xem có gì nữa không
+bạn có thể học về Go, hoặc đến trực tiếp [[javascript:click('.next-page')][bài tiếp theo]].

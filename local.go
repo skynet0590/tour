@@ -63,11 +63,17 @@ func findRoot() (string, error) {
 		return p.Dir, nil
 	}
 	tourRoot := filepath.Join(runtime.GOROOT(), "misc", "tour")
+	fmt.Println(tourRoot)
 	ctx.GOPATH = tourRoot
 	p, err = ctx.Import(basePkg, "", build.FindOnly)
 	if err == nil && isRoot(tourRoot) {
 		gopath = tourRoot
 		return tourRoot, nil
+	}
+	currentPath, err := os.Getwd()
+	if err == nil && isRoot(currentPath) {
+		// gopath = tourRoot
+		return currentPath, nil
 	}
 	return "", fmt.Errorf("could not find go-tour content; check $GOROOT and $GOPATH")
 }
