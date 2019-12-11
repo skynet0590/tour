@@ -7,6 +7,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"golang.org/x/tour/ws"
 	"html/template"
 	"io"
 	"log"
@@ -19,8 +20,6 @@ import (
 	"runtime"
 	"strings"
 	"time"
-
-	"golang.org/x/tools/playground/socket"
 
 	// Imports so that go build/install automatically installs them.
 	_ "golang.org/x/tour/pic"
@@ -114,7 +113,7 @@ func main() {
 	http.HandleFunc("/lesson/", lessonHandler)
 
 	origin := &url.URL{Scheme: "http", Host: host + ":" + port}
-	http.Handle(socketPath, socket.NewHandler(origin))
+	http.Handle(socketPath, ws.NewHandler(origin))
 
 	registerStatic(root)
 
@@ -177,7 +176,7 @@ type response struct {
 }
 
 func init() {
-	socket.Environ = environ
+	ws.Environ = environ
 }
 
 // environ returns the original execution environment with GOPATH
