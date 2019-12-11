@@ -7,7 +7,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"golang.org/x/tour/ws"
 	"html/template"
 	"io"
 	"log"
@@ -20,6 +19,8 @@ import (
 	"runtime"
 	"strings"
 	"time"
+
+	"golang.org/x/tools/playground/socket"
 
 	// Imports so that go build/install automatically installs them.
 	_ "golang.org/x/tour/pic"
@@ -113,7 +114,7 @@ func main() {
 	http.HandleFunc("/lesson/", lessonHandler)
 
 	origin := &url.URL{Scheme: "http", Host: host + ":" + port}
-	http.Handle(socketPath, ws.NewHandler(origin))
+	http.Handle(socketPath, socket.NewHandler(origin))
 
 	registerStatic(root)
 
@@ -140,6 +141,7 @@ func registerStatic(root string) {
 
 // rootHandler returns a handler for all the requests except the ones for lessons.
 func rootHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(r.RequestURI)
 	if err := renderUI(w); err != nil {
 		log.Println(err)
 	}
@@ -176,7 +178,7 @@ type response struct {
 }
 
 func init() {
-	ws.Environ = environ
+	socket.Environ = environ
 }
 
 // environ returns the original execution environment with GOPATH
