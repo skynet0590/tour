@@ -65,11 +65,11 @@ func findRoot() (string, error) {
 	tourRoot := filepath.Join(runtime.GOROOT(), "misc", "tour")
 	fmt.Println(tourRoot)
 	ctx.GOPATH = tourRoot
-	p, err = ctx.Import(basePkg, "", build.FindOnly)
+	/*p, err = ctx.Import(basePkg, "", build.FindOnly)
 	if err == nil && isRoot(tourRoot) {
 		gopath = tourRoot
 		return tourRoot, nil
-	}
+	}*/
 	currentPath, err := os.Getwd()
 	if err == nil && isRoot(currentPath) {
 		// gopath = tourRoot
